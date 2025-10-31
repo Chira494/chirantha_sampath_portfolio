@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Food Festival • Team Khutz</title>
+<meta name="description" content="Food Festival article for the Professional Skills portfolio." />
+<link rel="stylesheet" href="/style.css" />
+
+<!-- Minimal page-specific styles that reuse your theme tokens -->
+<style>
+  .article-content h1 { margin-bottom: 6px; }
+  .article-meta { opacity:.8; }
+
+  .photo-grid{
+    display:grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap:14px; margin:18px 0 8px;
+  }
+  .photo-grid figure{
+    grid-column: span 6; /* two-up on md+, one-up on mobile */
+    margin:0; background:rgba(255,255,255,.9);
+    border:2px solid var(--ink);
+    border-radius:18px;
+    box-shadow:6px 6px 0 var(--ink);
+    overflow:hidden;
+  }
+  .photo-grid img{ display:block; width:100%; height:auto; }
+  .photo-grid figcaption{
+    padding:10px 14px; font-size:.94rem; line-height:1.35;
+    border-top:2px solid var(--ink);
+    background: #fff;
+  }
+
+  .card{
+    background:rgba(255,255,255,.92);
+    border:2px solid var(--ink);
+    border-radius:18px;
+    padding:18px;
+    box-shadow:6px 6px 0 var(--ink);
+  }
+
+  .members h3{ margin:0 0 10px; }
+  .members ul{
+    list-style:none; padding:0; margin:0;
+    display:grid; grid-template-columns: 1fr; gap:8px;
+  }
+  .members li{
+    padding:10px 12px; border:1.5px dashed var(--ink); border-radius:12px;
+    background:#fff;
+  }
+
+  @media (min-width: 740px){
+    .members ul{ grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+<div class="shade" aria-hidden="true"></div>
+
+<nav class="nav">
+  <a href="/index.html">Home</a>
+  <a href="/index.html#about">About</a>
+  <a href="/index.html#articles">Articles</a>
+  <a href="/index.html#thanks">Thank&nbsp;You</a>
+</nav>
+
+<section>
+  <div class="container article-content reveal">
+    <h1>Food Festival — Team Khutz</h1>
+    <div class="article-meta">2025-07-29 • Event Reflection</div>
+
+    <div class="article-body">
+      <p>This session focused on teamwork and event planning through organizing a food festival. We practiced planning, clear communication, time management, and cooperation, with defined roles to keep operations smooth.</p>
+
+      <h3>Key points</h3>
+      <ul>
+        <li>Planning an end-to-end stall (prep → sales → wrap-up)</li>
+        <li>Teamwork & role ownership</li>
+        <li>Customer experience and feedback</li>
+      </ul>
+
+      <!-- Image grid -->
+      <div class="photo-grid">
+        <figure>
+          <img src="/foods.JPG" alt="Khutz collage and thank you poster at the Food Festival">
+          <figcaption><strong>This is Khutz</strong> — highlights from July 29, 2025.</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/foodsg.jpg" alt="Team Khutz group photo at the stall">
+          <figcaption><strong>Team Khutz</strong> — Saruwath & Cupcakes stall at the festival.</figcaption>
+        </figure>
+      </div>
+
+      <!-- Members -->
+      <div class="card members" style="margin-top:14px">
+        <h3>Members</h3>
+        <ul>
+          <li>R.G. Kaveen — <strong>SA23644380</strong></li>
+          <li>D.A.S.L. Thilakasiri — <strong>SA23627932</strong></li>
+          <li>M.K. Chamika — <strong>SA23251328</strong></li>
+          <li>W.A.C.S. Weerasingha — <strong>SA23630666</strong></li>
+          <li>I.V. Medawela — <strong>SA23640870</strong></li>
+          <li>K.S. Aloka — <strong>SA23726796</strong></li>
+          <li>J.M.S.C. Hansaka — <strong>SA23758612</strong></li>
+        </ul>
+      </div>
+
+      <p style="margin-top:18px">
+        <a class="btn" href="/index.html#articles">Back to Articles</a>
+        <a class="btn ghost" href="/index.html">Home</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<a class="btn to-top" id="toTop" href="/index.html#home" aria-label="Back to top">↑ Top</a>
+
+<script src="/main.js"></script>
+</body>
+</html>

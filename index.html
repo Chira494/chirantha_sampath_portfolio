@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Professional Skills • Portfolio</title>
+<meta name="description" content="Professional Skills portfolio with schedule, about, 12 articles, and thank you." />
+
+<style>
+  /* ================== THEME ================== */
+  :root{
+    --purple:#402d00;        /* primary purple */
+    --purple-deep:#8b7728;   /* deep purple for accents */
+    --ink:#d8d8d8e5;              /* black stroke */
+    --bg:#f1c595;               /* background fallback */
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color:var(--purple);
+
+    /* ===== Background photo setup ===== */
+    background-image: url("/back.jpg"); /* update path if needed */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+
+    background-color: var(--bg); /* fallback */
+  }
+
+  /* Subtle white shade pattern layer (above canvas so text remains crisp) */
+  .shade{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:
+      radial-gradient(rgba(0,0,0,0.03) 1px, transparent 1px) 0 0/18px 18px;
+    mix-blend-mode:multiply;
+  }
+
+  /* ================== CANVAS BG ================== */
+  #bg-canvas{
+    position:fixed; inset:0; z-index:-1;
+    display:block; width:100vw; height:100vh;
+    background:transparent; /* transparent so photo shows */
+  }
+
+  /* ================== NAV ================== */
+  .nav{
+    position:fixed; inset-inline:0; top:0; z-index:10;
+    display:flex; justify-content:center; gap:18px;
+    background:transparent;
+    border-bottom:0px solid var(--purple);
+    padding:10px 14px;
+    backdrop-filter:saturate(140%) blur(8px);
+  }
+  .nav a{
+    text-decoration:none; color:var(--purple); font-weight:700;
+    padding:8px 14px; border:2px solid var(--ink); border-radius:10px;
+    box-shadow:3px 3px 0 var(--ink);
+    transition:transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+  }
+  .nav a:hover{
+    background:rgb(248, 228, 181); color:#4f2b02; transform:translateY(-2px);
+    box-shadow:5px 5px 0 var(--ink);
+  }
+
+  /* ================== LAYOUT / SECTIONS ================== */
+  section{
+    min-height:100vh; display:grid; place-items:center;
+    padding:110px 20px 86px;
+    position:relative; z-index:1; /* above canvas */
+  }
+  .container{max-width:1100px; width:100%;}
+  h1{font-size:clamp(2rem, 1.3rem + 2.5vw, 3.2rem); margin:.2em 0 .5em}
+  p.lead{font-size:1.08rem; line-height:1.65; max-width:75ch}
+
+  /* ================== BUTTONS (black stroke) ================== */
+  .btn{
+    display:inline-block; padding:12px 20px;
+    border:2px solid var(--ink); border-radius:12px;
+    background:#fff4e6; color:rgb(58, 46, 31); font-weight:750; text-decoration:none;
+    box-shadow:transparent;
+    transition:transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+  }
+  .btn:hover{background:rgb(244, 197, 111); color:#fff; transform:translateY(-2px); box-shadow:6px 6px 0 var(--ink)}
+  .btn.ghost{background:transparent}
+
+  /* ================== SCROLL REVEAL ================== */
+  .reveal{opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease}
+  .reveal.show{opacity:1; transform:none}
+
+  /* ================== HOME: SCHEDULE CARDS ================== */
+  .schedule{
+    display:grid; gap:22px; margin-top:10px;
+    grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+  }
+  .card{
+    background-image :url("white\ ba.webp");background-size: cover; border:2px solid var(--ink);
+    border-radius:16px; padding:16px; box-shadow:5px 5px 0 var(--ink);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .card:hover{transform:translateY(-4px); box-shadow:7px 7px 0 var(--ink)}
+  .card h3{margin:.2em 0 .5em; font-size:1.1rem}
+  .list{margin:0; padding-left:18px; line-height:1.6}
+  .badge{
+    display:inline-block; font-size:.85rem; font-weight:800;
+    padding:5px 12px; border:2px solid var(--ink); border-radius:999px;
+    margin-bottom:10px; background:#fff; box-shadow:3px 3px 0 var(--ink);
+  }
+
+  /* ================== ABOUT BOX ================== */
+  .about-box{
+    border:2px solid var(--ink); border-radius:18px; padding:24px;
+    box-shadow:7px 7px 0 var(--ink); background-image:url("/background.jpg"); background-size: cover;
+  }
+
+  .about-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.about-img {
+  width: 220px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 4px 4px 12px rgba(0,0,0,0.2);
+}
+
+.about-text {
+  flex: 1;
+  min-width: 250px;
+}
+
+
+  /* ================== ARTICLES GRID ================== */
+  .grid{
+    display:grid; gap:18px; margin-top:8px;
+    grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+  }
+  .article{
+    border:2px solid var(--ink); border-radius:16px; padding:16px; background-image: url("/white\ ba.webp"); background-size: cover;
+    box-shadow:5px 5px 0 var(--ink); display:flex; flex-direction:column; gap:10px;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .article:hover{transform:translateY(-4px); box-shadow:7px 7px 0 var(--ink)}
+  .article h4{margin:0; font-size:1.05rem}
+  .article a{align-self:flex-start}
+
+  /* ================== THANK YOU ================== */
+  .thank{
+    text-align:center; border:2px solid var(--ink); border-radius:20px;
+    padding:26px; background-image:url("/background.jpg"); background-size: cover;  box-shadow:8px 8px 0 var(--ink);
+  }
+
+  /* ================== BACK TO TOP ================== */
+  .to-top{
+    position:fixed; right:18px; bottom:18px; z-index:9;
+    opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+  }
+  .to-top.show{opacity:1; pointer-events:auto}
+</style>
+</head>
+<body>
+  <!-- Background animation canvas -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="shade" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#articles">Articles</a>
+    <a href="#thanks">Thank&nbsp;You</a>
+  </nav>
+
+  <!-- HOME -->
+  <section id="home">
+    <div class="container reveal">
+      <h1>Professional Skills — Lecture Schedule</h1>
+      <p class="lead">This portfolio highlights the <strong>Professional Skills</strong> module, covering essential abilities such as 
+  <strong>communication, leadership, research, interview preparation, etiquette, emotional intelligence, and negotiation</strong>.  
+  From <strong>June to September</strong>, each session builds practical knowledge to prepare students for both 
+  academic success and future careers. Use the navigation bar to explore the <em>About</em> section, read detailed <em>Articles</em>, 
+  and view the <em>Thank You</em>
+
+      <div class="schedule" aria-label="Lecture schedule">
+        <div class="card reveal">
+          <span class="badge">June</span>
+          <h3>Sessions</h3>
+          <ul class="list">
+            <li>06/03 – Introduction</li>
+            <li>06/17 – CV Writing</li>
+            <li>06/24 – Portfolio Writing</li>
+          </ul>
+        </div>
+
+        <div class="card reveal">
+          <span class="badge">July</span>
+          <h3>Sessions</h3>
+          <ul class="list">
+            <li>07/01 – Team Leadership Skills</li>
+            <li>07/08 – Student Capabilities &amp; Generative AI Tools</li>
+            <li>07/22 – Research Writing</li>
+            <li>07/29 – Food Festival</li>
+          </ul>
+        </div>
+
+        <div class="card reveal">
+          <span class="badge">August</span>
+          <h3>Sessions</h3>
+          <ul class="list">
+            <li>08/05 – Job Interview</li>
+            <li>08/12 – Telephone Etiquettes / Email</li>
+            <li>08/19 – Emotional Intelligence</li>
+            <li>08/26 – Dining Etiquettes</li>
+          </ul>
+        </div>
+
+        <div class="card reveal">
+          <span class="badge">September</span>
+          <h3>Sessions</h3>
+          <ul class="list">
+            <li>09/02 – Negotiation Skills</li>
+          </ul>
+        </div>
+      </div>
+
+      <p style="margin-top:18px">
+        <a class="btn" href="#articles">Go to Articles</a>
+        <a class="btn ghost" href="#about">About Section</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+<section id="about">
+  <div class="container about-box reveal">
+    <h1>About Me</h1>
+    <div class="about-content">
+      <!-- Profile Image -->
+      <img src="/WhatsApp Image 2025-09-24 at 17.40.46.jpeg" alt="Chirantha Sampath" class="about-img">
+      
+      <!-- About Text -->
+      <div class="about-text">
+        <p class="lead">
+          I am Chirantha Sampath, a Software Engineering undergraduate at SLIIT City University (affiliated with the University of Bedfordshire, UK). I have strong technical skills in web development and database management, with hands-on experience in HTML, CSS, JavaScript, PHP, and MySQL through academic projects and freelance work.
+        </p>
+        <p>
+          Beyond software, I am also a professional photographer with 3 years of experience in wedding, event, and wildlife photography, where I developed creativity, client-handling, and attention to detail.
+        </p>
+        <p>
+          I enjoy combining technical expertise with creative problem-solving, and I thrive in teamwork, leadership, and delivering high-quality results. My goal is to grow as a versatile IT professional who can apply both technical and creative skills to make a positive impact.
+        </p>
+        <a class="btn" href="#articles">See 12 Articles</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- ARTICLES -->
+  <section id="articles">
+    <div class="container">
+      <h1 class="reveal">Module Articles</h1>
+      <p class="lead reveal"></p>
+
+      <div class="grid">
+        <div class="article reveal"><h4>01 — Introduction</h4><p>Module aims, expectations, assessment.</p><a class="btn" href="articles/introduction.html">Read</a></div>
+        <div class="article reveal"><h4>02 — CV Writing</h4><p>Structure, action verbs, quantify impact.</p><a class="btn" href="articles/cv-writing.html">Read</a></div>
+        <div class="article reveal"><h4>03 — Portfolio Writing</h4><p>Showcasing projects & reflections.</p><a class="btn" href="articles/portfolio-writing.html">Read</a></div>
+        <div class="article reveal"><h4>04 — Team Leadership Skills</h4><p>Clarity, delegation, feedback loops.</p><a class="btn" href="articles/team-leadership.html">Read</a></div>
+        <div class="article reveal"><h4>05 — Student Capabilities &amp; GenAI</h4><p>Productivity, ethics, tooling.</p><a class="btn" href="articles/student-capabilities-genai.html">Read</a></div>
+        <div class="article reveal"><h4>06 — Research Writing</h4><p>Arguments, citations, academic tone.</p><a class="btn" href="articles/research-writing.html">Read</a></div>
+        <div class="article reveal"><h4>07 — Food Festival</h4><p>Planning, teamwork, real-time comms.</p><a class="btn" href="articles/food-festival.html">Read</a></div>
+        <div class="article reveal"><h4>08 — Job Interview</h4><p>STAR method, follow-ups.</p><a class="btn" href="articles/job-interview.html">Read</a></div>
+        <div class="article reveal"><h4>09 — Telephone Etiquettes / Email</h4><p>Professional tone & netiquette.</p><a class="btn" href="articles/telephone-email.html">Read</a></div>
+        <div class="article reveal"><h4>10 — Emotional Intelligence</h4><p>Self-awareness, empathy, conflict.</p><a class="btn" href="articles/emotional-intelligence.html">Read</a></div>
+        <div class="article reveal"><h4>11 — Dining Etiquettes</h4><p>Business dining do’s & don’ts.</p><a class="btn" href="articles/dining-etiquettes.html">Read</a></div>
+        <div class="article reveal"><h4>12 — Negotiation Skills</h4><p>Preparation, BATNA, anchoring.</p><a class="btn" href="articles/negotiation-skills.html">Read</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THANK YOU -->
+  <section id="thanks">
+    <div class="container thank reveal">
+      <h1>Thank You</h1>
+      <p class="lead"></p>
+      <a class="btn" href="#home" aria-label="Back to top">Back to Home</a>
+    </div>
+  </section>
+
+  <!-- Back-to-top Floating Button -->
+  <a class="btn to-top" id="toTop" href="#home" aria-label="Back to top">↑ Top</a>
+
+<script>
+/* ================== SCROLL REVEAL ================== */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){ entry.target.classList.add('show'); }
+  });
+},{threshold:0.12});
+revealEls.forEach(el=>io.observe(el));
+
+/* ================== SHOW BACK-TO-TOP ================== */
+const toTop = document.getElementById('toTop');
+function toggleTop(){ if(window.scrollY>320) toTop.classList.add('show'); else toTop.classList.remove('show'); }
+window.addEventListener('scroll', toggleTop); toggleTop();
+
+/* ================== RESPONSIVE CANVAS ================== */
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d', { alpha: true });
+let W = canvas.width = window.innerWidth;
+let H = canvas.height = window.innerHeight;
+function resize(){
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  setupOrbs(); // re-seed orbs on resize for nicer coverage
+}
+window.addEventListener('resize', resize);
+
+/* ================== ANIMATED ORBS ================== */
+class Orb{
+  constructor(opts){
+    this.x = Math.random()*W;
+    this.y = Math.random()*H;
+    this.r = opts.r || (40 + Math.random()*90);
+    this.vx = (Math.random()*2 - 1) * (0.25 + Math.random()*0.6);
+    this.vy = (Math.random()*2 - 1) * (0.25 + Math.random()*0.6);
+    this.hue = opts.hue; // 'black' or 'purple'
+    this.alpha = opts.alpha ?? 0.18;
+    this.blur = opts.blur || 80;
+  }
+  step(){
+    this.x += this.vx; this.y += this.vy;
+    if(this.x < -this.r) { this.x = W + this.r; }
+    if(this.x > W + this.r) { this.x = -this.r; }
+    if(this.y < -this.r) { this.y = H + this.r; }
+    if(this.y > H + this.r) { this.y = -this.r; }
+  }
+  draw(){
+    const g = ctx.createRadialGradient(this.x, this.y, this.r*0.2, this.x, this.y, this.r);
+    if(this.hue === 'black'){
+      g.addColorStop(0, `rgba(0,0,0,${this.alpha})`);
+      g.addColorStop(1, `rgba(0,0,0,0)`);
+    }else{
+      g.addColorStop(0, `rgba(109,40,217,${this.alpha})`);
+      g.addColorStop(1, `rgba(109,40,217,0)`);
+    }
+    ctx.save();
+    ctx.globalCompositeOperation = 'multiply';
+    ctx.filter = `blur(${this.blur}px)`;
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+let orbs = [];
+function setupOrbs(){
+  orbs = [];
+  const count = Math.max(10, Math.floor((W*H)/120000)); // scale with viewport
+  for(let i=0;i<count;i++){
+    orbs.push(new Orb({
+      hue: i%3===0 ? 'black' : 'purple',
+      alpha: i%3===0 ? 0.12 : 0.18,
+      blur: 70+Math.random()*80,
+      r: 50+Math.random()*120
+    }));
+  }
+}
+setupOrbs();
+
+/* ================== ANIMATION LOOP ================== */
+let animating = true;
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+function animate(){
+  if(!animating) return;
+
+  ctx.clearRect(0,0,W,H);
+  // light wash so white base stays bright (keeps UI crisp over the photo)
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.fillRect(0,0,W,H);
+
+  for(const orb of orbs){ orb.step(); orb.draw(); }
+  requestAnimationFrame(animate);
+}
+if (prefersReduced.matches){
+  animating = false; // respect reduced motion
+  ctx.clearRect(0,0,W,H);
+} else {
+  requestAnimationFrame(animate);
+}
+prefersReduced.addEventListener?.('change', (e)=>{
+  animating = !e.matches;
+  if(animating) requestAnimationFrame(animate);
+  else ctx.clearRect(0,0,W,H);
+});
+</script>
+</body>
+</html>
